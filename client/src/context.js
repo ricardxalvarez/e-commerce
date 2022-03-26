@@ -78,6 +78,15 @@ export const AppProvider = ({children})=>{
     const decreaseItem = (id)=>{
         dispatch({type:'decrease', payload: id})
     }
+    const increase = ()=>{
+        setQuantity( quantity + 1)
+    }
+    const decrease = ()=>{
+        setQuantity(quantity + 1)
+        if (quantity === 1){
+            setQuantity(1)
+        }
+    }
     useEffect(()=>{
         dispatch({type:'getSubtotal'})
         dispatch({type:'getShipping'})
@@ -111,7 +120,9 @@ export const AppProvider = ({children})=>{
             login,
             reloadUser,
             sumUser,
-            clearCartUser
+            clearCartUser,
+            increase,
+            decrease
         }}
         >{children}</AppContext.Provider>
     )
