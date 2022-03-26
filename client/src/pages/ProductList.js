@@ -4,11 +4,10 @@ import Announcements from '../components/announcements'
 import Footer from '../components/footer'
 import Navbar from '../components/navbar'
 import Newsletter from '../components/newsletter'
-// import{ popularProducts } from '../data'
 import Product from '../components/product'
 import ProductsDataService from '../services/products'
 import {AiOutlineArrowRight, AiOutlineArrowLeft} from 'react-icons/ai'
-
+import { mobil } from '../responsive'
 const Container = styled.div``
 const Title = styled.h1`
 margin: 20px;
@@ -17,6 +16,9 @@ const FilterContainer = styled.div`
 display: flex;
 justify-content: space-between;
 align-items: center;
+${mobil({
+  flexDirection: 'column'
+})}
 `
 const Filter = styled.div`
 margin: 20px;
@@ -38,15 +40,6 @@ display: flex;
 padding: 20px;
 flex-wrap: wrap;
 justify-content: space-between;
-`
-const SortButton = styled.button`
-background: transparent;
-border: none;
-cursor: pointer;
-`
-const ButtonContainer = styled.div`
-display: flex;
-flex-wrap: wrap;
 `
 const PageCtrl = styled.div`
 display: flex;

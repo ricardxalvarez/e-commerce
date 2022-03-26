@@ -66,21 +66,21 @@ transition: all 0.3s ease;
 `
 const Product = ({item}) => {
   const scroll = ()=> { window.scrollTo({top: 0})}
+  {/* <Icon>
+    <ShoppingCartOutlinedIcon/>
+  </Icon> */}
+  {/* <Icon>
+    <FavoriteOutlined/>
+  </Icon> */}
   return (
     <Container>
       <Circle/>
       <Image src={item.image}/>
       <Info>
           <Icon>
-            <ShoppingCartOutlinedIcon/>
-          </Icon>
-          <Icon>
-            <Link to={`/product/${item.id}`}>
+            <Link style={{color: 'black'}} to={`/product/${item.id}`}>
             <SearchOutlined onClick={scroll}/>
             </Link>
-          </Icon>
-          <Icon>
-            <FavoriteOutlined/>
           </Icon>
       </Info>
     </Container>

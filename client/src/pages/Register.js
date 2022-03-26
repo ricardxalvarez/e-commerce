@@ -67,7 +67,7 @@ const Register = () => {
         password
     }
     let navigate = useNavigate()
-    const submit = (e)=>{
+    const submit = async (e)=>{
         if (name.length > 2){
             if (lastname.length > 2){
                 if (email.length > 2){
@@ -75,7 +75,7 @@ const Register = () => {
                         if (password.length > 2){
                             if (confirmPassword === password){
                                 e.preventDefault()
-                                ProductsDataService.singUp(response)
+                                await ProductsDataService.singUp(response)
                                 navigate('/login')
                             }
                         }
@@ -91,7 +91,7 @@ const Register = () => {
             <Form onSubmit={submit}>
                 <Input value={name} onChange={(e)=> setName(e.target.value)} required placeholder='name'/>
                 <Input value={lastname} onChange={(e)=> setLastName(e.target.value)} required placeholder='last name'/>
-                <Input value={email} onChange={(e)=> setEmail(e.target.value)} required placeholder='email'/>
+                <Input type='email' value={email} onChange={(e)=> setEmail(e.target.value)} required placeholder='email'/>
                 <Input value={userName} onChange={(e)=> setUserName(e.target.value)} required placeholder='username'/>
                 <Input value={password} onChange={(e)=> setPassord(e.target.value)} required placeholder='password'/>
                 <Input value={confirmPassword} onChange={(e)=> setConfirmPassord(e.target.value)} required placeholder='confirm password'/>

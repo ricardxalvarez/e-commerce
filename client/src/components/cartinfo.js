@@ -1,10 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Add, Delete, Remove } from '@mui/icons-material'
+import { Add,  Remove } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
 import {mobil} from '../responsive'
 import { useGlobalContext } from '../context'
-import ProductsDataService from '../services/products'
 
 const Product = styled.div`
 display: flex;
@@ -58,17 +57,8 @@ background-color: lightgrey;
 border: none;
 height: 1px;
 `
-const CartInfo = () => {
-    const {increaseItem, decreaseItem, cartItems, userLogged, userLoggedCart, increaseItemUser, decreaseItemUser, cartUser, setUserLoggedCart} = useGlobalContext()
-       /* useEffect(()=>{
-        const responsePut = {
-            list : [...cartUser],
-            userid: userData._id
-        }
-        ProductsDataService.updateToCart(responsePut)
-        setUserLoggedCart(cartUser)
-    },[cartUser]) */
-    console.log(cartUser)
+const CartInfo = ({increaseItemUser, decreaseItemUser}) => {
+    const {increaseItem, decreaseItem, cartItems, userLogged, userLoggedCart} = useGlobalContext()
     if (!userLogged){
         return (
               cartItems
@@ -80,7 +70,7 @@ const CartInfo = () => {
                               <Details>
                               <ProductName>
                               <b>Product: </b>
-                              <Link to={`/product/${item.id}`} style={{textDecoration: 'none'}}>
+                              <Link to={`/product/${item.id}`} onClick={()=> window.scrollTo({top : 0})} style={{textDecoration: 'none'}}>
                               {item.name}
                               </Link>
                               </ProductName>

@@ -1,10 +1,11 @@
 import styled from 'styled-components'
-import React, { useState, useRef } from 'react'
+import React, { useState} from 'react'
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import {sliderItems} from '../data'
 import { mobil } from '../responsive';
 import { tablet } from '../responsive';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
 width: 100%;
@@ -98,6 +99,7 @@ const Button = styled.button`
 
 const Slider = () => {
     const [slideIndex, setSlideIndex] = useState(0)
+    const navigate = useNavigate()
     const handleClick = (direction)=>{
      if (direction === 'left'){
          setSlideIndex(slideIndex > 0 ? slideIndex -1 : 2)
@@ -118,7 +120,7 @@ const Slider = () => {
             <InfoContainer>
             <Title>{item.title}</Title>
             <Desc>{item.desc}</Desc>
-            <Button>SHOP NOW</Button>
+            <Button onClick={()=> navigate('/products')}>SHOP NOW</Button>
                 </InfoContainer>
             </SlideContainer>
             )})}

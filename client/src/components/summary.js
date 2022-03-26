@@ -21,8 +21,8 @@ background-color: black;
 color: white;
 font-weight: 300;
 `
-const Summary = () => {
-    const {subtotal, delivery, userLogged, subtotalUser, deliveryUser} = useGlobalContext()
+const Summary = ({subtotalUser, deliveryUser}) => {
+    const {subtotal, delivery, userLogged} = useGlobalContext()
     const discount =  subtotal > 50 ? delivery: 0
     const discountUser =  subtotalUser > 50 ? deliveryUser: 0
     if (!userLogged){
@@ -60,7 +60,7 @@ const Summary = () => {
                       </SummaryItem>
                       <SummaryItem>
                           <SummaryItemText>Shipping Discount:</SummaryItemText>
-                          <SummaryItemPrice>$ {discountUser === 0 ? 0: `-${discount.toFixed(1)}` }</SummaryItemPrice>
+                          <SummaryItemPrice>$ {discountUser === 0 ? 0: `-${discountUser.toFixed(1)}` }</SummaryItemPrice>
                       </SummaryItem>
                       <SummaryItem type='total'>
                           <SummaryItemText >Total:</SummaryItemText>

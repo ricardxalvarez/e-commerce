@@ -47,7 +47,7 @@ const CategorieItem = ({item}) => {
         <Info>
             <Title>{item.title}</Title>
             <Link to='/products'>
-            <Button>SHOP NOW</Button>
+            <Button onClick={()=> window.scrollTo({top : 0})}>SHOP NOW</Button>
             </Link>
         </Info>
     </Container>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import styled from 'styled-components'
 import Announcements from '../components/announcements'
 import Footer from '../components/footer'
@@ -6,8 +6,9 @@ import Navbar from '../components/navbar'
 import {useGlobalContext} from '../context'
 import {mobil} from '../responsive'
 import CartInfo from '../components/cartinfo'
-import ProductsDataService from '../services/products'
 import SummaryInfo from '../components/summary'
+import reducerUser from '../reducer.user'
+import ProductsDataService from '../services/products'
 
 const Container = styled.div``
 const Wrapper = styled.div``
@@ -62,11 +63,17 @@ height: 60vh;
 margin: 20px 0;
 `
 const Cart = () => {
-    const {cart, setCartItems, sum, reloadUser, userData, userLogged, setUserLoggedCart, sumUser, clearCartUser, cartUser} = useGlobalContext()
+    const {cart, setCartItems, sum, reloadUser, userLoggedCart, userLogged, setUserLoggedCart, sumUser, clearCartUser, userData} = useGlobalContext()
+    let initialStateUser = {
+        cartUser: userLoggedCart,
+        subtotalUser: 0,
+        deliveryUser: 0,
+        amountUser: 0
+    }
+    const [stateUser, dispatchUser] = useReducer(reducerUser,initialStateUser)
     useEffect(()=>{
         setCartItems(cart)
     },[cart])
- 
     const clear = ()=>{
         if (userLogged){
             clearCartUser()
@@ -76,6 +83,26 @@ const Cart = () => {
             document.location.reload()
         }
     }
+    const increaseItemUser = (id)=>{
+        dispatchUser({type: 'increase', payload: id})
+    }
+    const decreaseItemUser = (id)=>{
+        dispatchUser({type: 'decrease', payload: id})
+    }
+    useEffect(()=>{
+        dispatchUser({type : 'getSubtotal'})
+        dispatchUser({type: 'getShipping'})
+    }, [stateUser.cartUser])
+    useEffect(()=>{
+        if (userData.name){
+            let response = {
+                list: stateUser.cartUser,
+                userid: userData._id
+            }
+            setUserLoggedCart(stateUser.cartUser)
+            ProductsDataService.updateToCart(response)
+        }
+    },[stateUser.cartUser])
   return (
     <Container>
         <Navbar/>
@@ -92,11 +119,11 @@ const Cart = () => {
             <Bottom>
                 <Info>
                 {
-                    <CartInfo/>
+                    <CartInfo {...stateUser} decreaseItemUser={decreaseItemUser} increaseItemUser={increaseItemUser}/>
                 }
                 </Info>
                 <Summary>
-                <SummaryInfo/>
+                <SummaryInfo {...stateUser}/>
                 </Summary>
             </Bottom>
         </Wrapper>

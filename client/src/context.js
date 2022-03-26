@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect, useReducer } from 'react'
 import reducer from './reducer'
-import reducerUser from './reducer.user'
 import ProductsDataService from './services/products'
 
 const AppContext = React.createContext()
@@ -21,9 +20,6 @@ export const AppProvider = ({children})=>{
     const [userData, setUserData] = useState({})
     const [tempUser, setTempUser] = useState('')
     const [userLoggedCart, setUserLoggedCart] = useState([])
-    useEffect(()=>{
-        console.log(userLoggedCart)
-    },[userData])
     const login = async (username, password)=>{
         await ProductsDataService.logIn(username, password)
         .then(res => {
@@ -40,7 +36,7 @@ export const AppProvider = ({children})=>{
             ProductsDataService.getCartByUser(userData._id)
             .then(resp => {
                 setUserData(resp.data)
-                setUserLoggedCart(userData.cart[0].list.map((e)=> {return e}))
+                setUserLoggedCart(userData.cart[0].list)
             })
             .catch(e => console.log(e))
         }
@@ -51,19 +47,12 @@ export const AppProvider = ({children})=>{
         delivery: 0,
         amount: 0
     }
-    let initialStateUser = {
-        cartUser: userLoggedCart,
-        subtotalUser: 0,
-        deliveryUser: 0,
-        amountUser: 0
-    }
+
     const [state, dispatch] = useReducer(reducer, initialState)
-    const [stateUser, dispatchUser] = useReducer(reducerUser,initialStateUser)
     const amounts = state.cart.map((item)=>{
         const {quantity} = item
         return quantity
     })
-    console.log(stateUser)
     const amountUser = userLoggedCart.map((item)=>{
         const {quantity} = item
         return quantity
@@ -88,12 +77,6 @@ export const AppProvider = ({children})=>{
     }
     const decreaseItem = (id)=>{
         dispatch({type:'decrease', payload: id})
-    }
-    const increaseItemUser = (id)=>{
-        // dispatchUser({type:'increace', payload: id})
-    }
-    const decreaseItemUser = (id)=>{
-        // dispatchUser({type: 'decrease', payload: id})
     }
     useEffect(()=>{
         dispatch({type:'getSubtotal'})
@@ -128,10 +111,7 @@ export const AppProvider = ({children})=>{
             login,
             reloadUser,
             sumUser,
-            clearCartUser,
-            ...stateUser,
-            increaseItemUser,
-            decreaseItemUser
+            clearCartUser
         }}
         >{children}</AppContext.Provider>
     )

@@ -142,6 +142,7 @@ const Product = () => {
             if (!isElementAdded){
                 setCartItems([...cart, newItem])
                 document.location.reload()
+                setIsElementAdded(true)
             }
         } else {
             
@@ -154,6 +155,7 @@ const Product = () => {
                     await ProductsDataService.postToCart(response)
                     reloadUser()
                     setUserLoggedCart(userData.cart[0].list)
+                    setIsElementAdded(true)
                 } else {
                     const responsePut = {
                     list : [...userData.cart[0].list, newItem],
@@ -161,12 +163,11 @@ const Product = () => {
                     }
                     await ProductsDataService.updateToCart(responsePut)
                     setUserLoggedCart(userData.cart[0].list)
+                    setIsElementAdded(true)
                 }
             }
         }
-        setIsElementAdded(true)
     }
-    console.log(userLoggedCart)
     const retrieveProduct = async ()=>{
         await ProductsDataService.getItemById(id)
         .then(response => {
