@@ -4,6 +4,7 @@ import { Add,  Remove } from '@mui/icons-material'
 import { Link } from 'react-router-dom'
 import {mobil} from '../responsive'
 import { useGlobalContext } from '../context'
+import ProductsDataService from '../services/products'
 
 const Product = styled.div`
 display: flex;
@@ -58,7 +59,7 @@ border: none;
 height: 1px;
 `
 const CartInfo = ({increaseItemUser, decreaseItemUser}) => {
-    const {increaseItem, decreaseItem, cartItems, userLogged, userLoggedCart} = useGlobalContext()
+    const {increaseItem, decreaseItem, cartItems, userLogged, userLoggedCart, userData} = useGlobalContext()
     if (!userLogged){
         return (
               cartItems
@@ -117,7 +118,15 @@ const CartInfo = ({increaseItemUser, decreaseItemUser}) => {
                               <ProductAmountContainer>
                               <Add onClick={()=> increaseItemUser(item.id)}/>
                               <Amount>{item.quantity}</Amount>
-                              <Remove onClick={()=> decreaseItemUser(item.id)}/>
+                              <Remove onClick={()=> {
+                                  decreaseItemUser(item.id)
+                                  if (userLoggedCart.length === 1 && userLoggedCart[0].quantity === 1){
+                                    ProductsDataService.deleteItemCart(userData._id)
+                                    .then( res => {
+                                        document.location.reload()
+                                    })
+                                }
+                                }}/>
                               </ProductAmountContainer>
                               <ProductPrice>$ {(item.quantity * item.price).toFixed(2)}</ProductPrice>
                               </PriceDetail>

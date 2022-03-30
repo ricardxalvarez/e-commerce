@@ -27,18 +27,19 @@ const Sidebar = () => {
   return (
     <Container className={`${isSidebarOpen?'sidebar':'sidebar closed'}`}>
       <Wrapper>
-          <Link onClick={()=> setIsSidebarOpen(false)} to='/register' style={{ textDecoration: 'none'}}>
-          <Direct>REGISTER</Direct>
+          <Link  to='/register' style={{ textDecoration: 'none'}}>
+          <Direct onClick={()=> setIsSidebarOpen(false)}>REGISTER</Direct>
           </Link>
-          <Link onClick={()=> setIsSidebarOpen(false)} to={userLogged ? '/': '/login'} style={{ textDecoration: 'none'}}>
+          <Link to={userLogged ? '/': '/login'} style={{ textDecoration: 'none'}}>
           <Direct onClick={()=>{
             if (userLogged){
               setUserLogged(false)
             }
+            setIsSidebarOpen(false)
           }}>{userLogged? 'LOG OUT' : 'SIGN IN'}</Direct>
           </Link>
-          <Link onClick={()=> setIsSidebarOpen(false)} to='/cart' style={{ textDecoration: 'none'}}>
-          <Direct>CART</Direct>
+          <Link to='/orders' style={{ textDecoration: 'none'}}>
+          <Direct onClick={()=> setIsSidebarOpen(false)}>ORDERS</Direct>
           </Link>
       </Wrapper>
     </Container>

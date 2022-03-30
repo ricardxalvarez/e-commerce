@@ -14,23 +14,55 @@ export const AppProvider = ({children})=>{
         return JSON.parse(localStorage.getItem('cartItems'))
       } else return []
     }
+    const getLocalStorageOrders = ()=>{
+        let orders = localStorage.getItem('orders')
+        if (orders){
+            return JSON.parse(localStorage.getItem('orders'))
+        } else return []
+    }
     const [isSidebarOpen, setIsSidebarOpen] = useState(false)
     const [cartItems, setCartItems] = useState(getLocalStorage)
     const [userLogged, setUserLogged] = useState(false)
     const [userData, setUserData] = useState({})
     const [tempUser, setTempUser] = useState('')
+    const [shippingModal, setShippingModal] = useState(false)
     const [userLoggedCart, setUserLoggedCart] = useState([])
+    const [shippingData, setShippingData] = useState({})
+    const [alert, setAlert] = useState(false)
+    const [total, setTotal] = useState(0)
+    const [totalUser, setTotalUser] = useState(0)
+    const [listOrder, setListOrder] = useState(getLocalStorageOrders)
+    const [listOrderUser, setListOrderUser] = useState([])
+    useEffect(()=>{
+        console.log(shippingData)
+    },[shippingData])
     const login = async (username, password)=>{
         await ProductsDataService.logIn(username, password)
         .then(res => {
-            setTempUser(res.data.item[0]._id)
-            ProductsDataService.getCartByUser(tempUser)
-            .then(resp => {
-              setUserData(resp.data)
-              setUserLoggedCart(userData.cart[0].list)
-            }) 
+                setTempUser(res.data.item[0]._id)
+                ProductsDataService.getCartByUser(tempUser)
+                .then(resp => {
+                    setUserData(resp.data)
+                    setUserLoggedCart(userData.cart[0].list)
+                ProductsDataService.getOrder(userData._id)
+                .then(res => {
+                setListOrderUser(res.data.order)
+                })
+                }) 
     })
+        .catch(err =>{
+            setAlert(true)
+            setTimeout(()=>{
+                setAlert(false)
+            },3000)
+        })
 }
+    const openShippingModal = ()=>{
+        setShippingModal(true)
+    }
+    const closeShippingModal = ()=>{
+        setShippingModal(false)
+    }
     const reloadUser = ()=>{
         if (userData && userLogged){
             ProductsDataService.getCartByUser(userData._id)
@@ -45,9 +77,8 @@ export const AppProvider = ({children})=>{
         cart: cartItems,
         subtotal:0,
         delivery: 0,
-        amount: 0
+        amount: 0,
     }
-
     const [state, dispatch] = useReducer(reducer, initialState)
     const amounts = state.cart.map((item)=>{
         const {quantity} = item
@@ -57,6 +88,13 @@ export const AppProvider = ({children})=>{
         const {quantity} = item
         return quantity
     })
+    useEffect(()=>{
+        if (state.subtotal > 50){
+            setTotal((state.subtotal))
+        } else {
+            setTotal(state.subtotal + state.delivery)
+        }
+    },[initialState])
     const sum = [...amounts].reduce((partialSum, a) => partialSum + a, 0);
     const sumUser = [...amountUser].reduce((partialSum,a) => partialSum + a, 0)
     const openSidebar = ()=>{
@@ -82,7 +120,7 @@ export const AppProvider = ({children})=>{
         setQuantity( quantity + 1)
     }
     const decrease = ()=>{
-        setQuantity(quantity + 1)
+        setQuantity(quantity + -1)
         if (quantity === 1){
             setQuantity(1)
         }
@@ -94,6 +132,9 @@ export const AppProvider = ({children})=>{
     useEffect(()=>{
   localStorage.setItem('cartItems',JSON.stringify(cartItems))
 },[cartItems])
+    useEffect(()=>{
+        localStorage.setItem('orders', JSON.stringify(listOrder))
+    }, [listOrder])
 
     return (
         <AppContext.Provider
@@ -101,6 +142,7 @@ export const AppProvider = ({children})=>{
             openSidebar,
             closeSidebar,
             isSidebarOpen,
+            setIsSidebarOpen,
             setCartItems,
             cartItems,
             quantity,
@@ -122,7 +164,20 @@ export const AppProvider = ({children})=>{
             sumUser,
             clearCartUser,
             increase,
-            decrease
+            decrease,
+            openShippingModal,
+            closeShippingModal,
+            shippingModal,
+            shippingData,
+            setShippingData,
+            alert,
+            total,
+            totalUser,
+            setTotalUser,
+            listOrder,
+            setListOrder,
+            listOrderUser,
+            setListOrderUser
         }}
         >{children}</AppContext.Provider>
     )

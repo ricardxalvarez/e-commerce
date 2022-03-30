@@ -9,6 +9,8 @@ import Cart from "./pages/Cart";
 import Password from './components/password'
 import AddItems from "./components/addItems";
 import Edit from "./components/edit.js";
+import Checkout from "./pages/Checkout";
+import Orders from "./pages/Orders";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path="/api/lama/controller/@superadmin" element={<Password/>}/>
         <Route path="/api/lama/controller/@superadmin/:id" element={<Edit/>}/>
         <Route path="/add" element={<AddItems/>}/>
+        <Route path="/payment/checkout" element={<Checkout/>}/>
+        <Route path="/orders" element={<Orders/>}/>
       </Routes>
     </Router>
   );

@@ -21,6 +21,7 @@ background-color: white;
 ${mobil({
     width: '80%'
 })}
+position: relative;
 `
 const Title = styled.h1`
 font-size: 24px;
@@ -44,10 +45,18 @@ padding: 15px 20px;
 background: teal;
 color: white;
 margin: 20px 0;`
+const Alert = styled.p`
+padding: 2px 6px;
+position: absolute;
+top: 3.6rem;
+font-size: 13px;
+color: red;
+cursor: pointer;
+`
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const {userData, setUserLogged, login} = useGlobalContext()
+  const {userData, setUserLogged, login, alert} = useGlobalContext()
   const navigate = useNavigate()
   const submit = async (e) => {
     e.preventDefault()
@@ -59,8 +68,12 @@ const Login = () => {
   }
   return (
     <Container>
+    <Link to={'/'} style={{position: 'absolute', top: '30px', left: '30px', background: 'white', color: 'teal', textDecoration: 'none', padding: '6px 12px', fontWeight: '400'}}>Back</Link>
       <Wrapper>
             <Title>SIGN IN</Title>
+            {alert &&
+            <Alert>You entered an incorrect username or password</Alert>
+            }
             <Form>
                 <Input placeholder='username' value={username} onChange={(e)=> setUsername(e.target.value)}/>
                 <Input placeholder='password' value={password} onChange={(e)=> setPassword(e.target.value)}/>

@@ -124,7 +124,7 @@ const Product = () => {
     useEffect(()=>{
         retrieveProduct()
     }, [])
-    const {setCartItems, quantity, increase, decrese,cart, userLogged, userData, tempUser, setUserData, setUserLoggedCart, userLoggedCart, reloadUser} = useGlobalContext()
+    const {setCartItems, quantity, increase, decrease,cart, userLogged, userData, tempUser, setUserData, setUserLoggedCart, userLoggedCart, reloadUser} = useGlobalContext()
     const {id} = useParams()
     const [item, setItem] = useState({})
     const [isElementAdded, setIsElementAdded] = useState(false)
@@ -223,7 +223,7 @@ const Product = () => {
                                     </Filter>
                                     </FilterContainer>
                                     <AddContainer>
-                                    <AddCo quantity={quantity} decrese={decrese} increase={increase}/>
+                                    <AddCo quantity={quantity} decrease={decrease} increase={increase}/>
                                     <Button onClick={addTocart} proto={isElementAdded? 'added': ''}>{isElementAdded? 'Added': 'ADD TO CART'}</Button>
                                     </AddContainer>
                                     </InfoContainer>

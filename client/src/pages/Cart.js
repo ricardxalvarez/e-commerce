@@ -9,6 +9,7 @@ import CartInfo from '../components/cartinfo'
 import SummaryInfo from '../components/summary'
 import reducerUser from '../reducer.user'
 import ProductsDataService from '../services/products'
+import Shipping from '../components/shipping'
 
 const Container = styled.div``
 const Wrapper = styled.div``
@@ -63,7 +64,7 @@ height: 60vh;
 margin: 20px 0;
 `
 const Cart = () => {
-    const {cart, setCartItems, sum, reloadUser, userLoggedCart, userLogged, setUserLoggedCart, sumUser, clearCartUser, userData} = useGlobalContext()
+    const {cart, setCartItems, sum, reloadUser, userLoggedCart, userLogged, setUserLoggedCart, sumUser, clearCartUser, userData, shippingModal, totalUser, setTotalUser} = useGlobalContext()
     let initialStateUser = {
         cartUser: userLoggedCart,
         subtotalUser: 0,
@@ -76,6 +77,7 @@ const Cart = () => {
     },[cart])
     const clear = ()=>{
         if (userLogged){
+            setUserLoggedCart([])
             clearCartUser()
             reloadUser()
         } else {
@@ -103,6 +105,13 @@ const Cart = () => {
             ProductsDataService.updateToCart(response)
         }
     },[stateUser.cartUser])
+    useEffect(()=>{
+        if (stateUser.subtotalUser > 50){
+            setTotalUser((stateUser.subtotalUser))
+        } else {
+            setTotalUser(stateUser.subtotalUser + stateUser.deliveryUser)
+        }
+    },[initialStateUser])
   return (
     <Container>
         <Navbar/>
@@ -114,16 +123,24 @@ const Cart = () => {
                 <TopTexts>
                     <TopText>Shopping Bag ({userLogged? sumUser : sum})</TopText>
                 </TopTexts>
-                <TopButton type='filled' onClick={clear}>CLEAR CART</TopButton>
+                <TopButton type='filled' onClick={() => {
+                    clear()
+                    document.location.reload()
+                    }}>CLEAR CART</TopButton>
             </Top>
             <Bottom>
+                {
+                    shippingModal &&
+                   <Shipping/>
+                }
+                
                 <Info>
                 {
                     <CartInfo {...stateUser} decreaseItemUser={decreaseItemUser} increaseItemUser={increaseItemUser}/>
                 }
                 </Info>
                 <Summary>
-                <SummaryInfo {...stateUser}/>
+                <SummaryInfo {...stateUser} totalUser={totalUser}/>
                 </Summary>
             </Bottom>
         </Wrapper>

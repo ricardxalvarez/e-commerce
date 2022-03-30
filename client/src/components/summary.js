@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import {useGlobalContext} from '../context'
 
@@ -20,9 +21,10 @@ padding: 10px;
 background-color: black;
 color: white;
 font-weight: 300;
+cursor: pointer;
 `
 const Summary = ({subtotalUser, deliveryUser}) => {
-    const {subtotal, delivery, userLogged} = useGlobalContext()
+    const {subtotal, delivery, userLogged, openShippingModal, total, totalUser} = useGlobalContext()
     const discount =  subtotal > 50 ? delivery: 0
     const discountUser =  subtotalUser > 50 ? deliveryUser: 0
     if (!userLogged){
@@ -42,9 +44,9 @@ const Summary = ({subtotalUser, deliveryUser}) => {
                       </SummaryItem>
                       <SummaryItem type='total'>
                           <SummaryItemText >Total:</SummaryItemText>
-                          <SummaryItemPrice> $ {(subtotal + delivery - discount).toFixed(2) }</SummaryItemPrice>
+                          <SummaryItemPrice> $ {total.toFixed(2) }</SummaryItemPrice>
                       </SummaryItem>
-                      <SummaryButton>CHECKOUT NOW</SummaryButton>
+                      <SummaryButton onClick={openShippingModal}>CHECKOUT NOW</SummaryButton>
         </>
         )
     } else {
@@ -64,9 +66,9 @@ const Summary = ({subtotalUser, deliveryUser}) => {
                       </SummaryItem>
                       <SummaryItem type='total'>
                           <SummaryItemText >Total:</SummaryItemText>
-                          <SummaryItemPrice> $ {(subtotalUser + deliveryUser - discountUser).toFixed(2) }</SummaryItemPrice>
+                          <SummaryItemPrice> $ {(totalUser).toFixed(2) }</SummaryItemPrice>
                       </SummaryItem>
-                      <SummaryButton>CHECKOUT NOW</SummaryButton>
+                      <SummaryButton onClick={openShippingModal}>CHECKOUT NOW</SummaryButton>
         </>
         )
     }

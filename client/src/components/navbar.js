@@ -66,7 +66,7 @@ const Right = styled.div`
 
 `
 const Navbar = () => {
-  const {openSidebar, isSidebarOpen, closeSidebar, sum, userLogged, setUserLogged, userData, sumUser} = useGlobalContext()
+  const {openSidebar, isSidebarOpen, closeSidebar, sum, userLogged, setUserLogged, userData, sumUser, listOrder, listOrderUser} = useGlobalContext()
   return (<>
     <Container>
         <Wrapper>
@@ -79,7 +79,7 @@ const Navbar = () => {
             </Link>
             </Center>
             <Right>
-              <MenuItems type='no-responsive'><Link style={{textDecoration: 'none', color: 'black'}} to={!userLogged && '/register'}>{userLogged ? `Hello ${userData.name}`: 'Register'}</Link></MenuItems>
+              <MenuItems type='no-responsive'><Link style={{textDecoration: 'none', color: 'black'}} to={'/orders'}>{userLogged ? `Hello ${userData.name } (${listOrderUser.length})`: `Orders (${listOrder.length})`}</Link></MenuItems>
               <MenuItems type='no-responsive'><Link style={{textDecoration: 'none', color: 'black'}} to={!userLogged && '/login'} onClick={()=> userLogged && setUserLogged(false)}>{userLogged? 'Log out':'Sign in'}</Link></MenuItems>
               <MenuItems>
               <Link to='/cart' style={{textDecoration: 'none'}}>

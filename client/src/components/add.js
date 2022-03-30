@@ -19,10 +19,10 @@ justify-content: center;
 margin: 0 5px;
 `
 
-const AddCo = ({quantity, increase, decrese}) => {
+const AddCo = ({quantity, increase, decrease}) => {
   return (
     <AmountContainer>
-        <Remove onClick={decrese}/>
+        <Remove onClick={decrease}/>
         <Amount>{quantity}</Amount>
         <Add onClick={increase}/>
     </AmountContainer>

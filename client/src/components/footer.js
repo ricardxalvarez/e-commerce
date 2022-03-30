@@ -1,4 +1,4 @@
-import { Facebook, GitHub, Instagram, MailOutlined, Phone, Room, Twitter } from '@mui/icons-material'
+import { Facebook, Instagram, MailOutlined, Phone, Room, Twitter } from '@mui/icons-material'
 import React from 'react'
 import styled from 'styled-components'
 import { mobil } from '../responsive'
@@ -84,9 +84,6 @@ const Footer = () => {
             </SocialIcon>
             <SocialIcon color='55acee'>
                 <Twitter/>
-            </SocialIcon>
-            <SocialIcon color='e60023'>
-                <GitHub/>
             </SocialIcon>
         </SocialContainer>
       </Left>

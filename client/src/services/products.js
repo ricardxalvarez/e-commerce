@@ -43,6 +43,15 @@ class ProductsDataService {
     static async deleteItemCart(userid){
         return http.delete(`/user/add?userid=${userid}`)
     }
+    static async fetchClient(amount){
+        return http.post('/payment', amount )
+    }
+    static async postOrder(data){
+        return http.post('/order', data)
+    }
+    static async getOrder(query){
+        return http.get(`/order?userid=${query}`)
+    }
 }
 
 export default ProductsDataService
